@@ -1,0 +1,11 @@
+[Unit]
+Description=Simulador de aplicacao em producao
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/linux-valley/app-systemd.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
