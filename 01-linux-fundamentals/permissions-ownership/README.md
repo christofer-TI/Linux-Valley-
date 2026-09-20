@@ -62,11 +62,11 @@ Apos a configuracao as exigencias citadas funcionaram 100%, porem, incluimos que
 # Configuracao da ACL
 Foi criada uma regra de ACL para permitir uma excecao de acesso a um usuario especifico.
 
-sudo setfact "programa precisa ser instalado antes do uso"
+sudo setfacf "programa precisa ser instalado antes do uso"
 
 A configuracao foi verificada com:
 
-getfact /srv/infra
+getfacf /srv/infra
 
 # Teste de ACL 
 O usuario que nao tinha acesso foi testado novamente e apos a aplicacao da ACL, foi permitido conforme a regra definida
