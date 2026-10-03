@@ -1,0 +1,14 @@
+network:
+version: 2
+ethernets:
+
+# Interface conectada à rede domestica
+enp0s3:
+  dhcp4: true
+
+# Interface dedicada a rede interna do laboratorio
+enp0s8:
+  addresses:
+    - 192.168.10.1/24
+
+
