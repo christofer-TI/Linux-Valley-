@@ -1,0 +1,9 @@
+// Define a zona DNS que sera administrada por este servidor
+zone "linux-valley" {
+
+    // Define este servidor como master da zona
+    type master;
+
+    // Indica o arquivo que contem os registros da zona
+    file "/etc/bind/db.linux-valley";
+};

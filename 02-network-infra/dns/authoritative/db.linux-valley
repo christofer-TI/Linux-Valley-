@@ -1,0 +1,25 @@
+// Tempo padrao de cache para os registros desta zona: 24 horas
+$TTL 86400
+
+// SOA: define as informacoes principais da zona
+// srv.linux-valley = servidor DNS autoritativo
+// admin.linux-valley = contato administrativo da zona
+@ IN SOA srv.linux-valley. admin.linux-valley. (
+    2026100401 ; Serial
+    3600       ; Refresh
+    1800       ; Retry
+    604800     ; Expire
+    86400      ; Negative Cache TTL
+)
+
+// Define o servidor DNS autoritativo da zona
+@ IN NS srv.linux-valley.
+
+// Define o endereco IP do servidor DNS
+srv IN A 192.168.10.1
+
+// Define o endereco do servidor web
+www IN A 192.168.10.1
+
+// Define o endereco do servidor de intranet
+intranet IN A 192.168.10.1
