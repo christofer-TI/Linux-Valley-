@@ -1,0 +1,78 @@
+options {
+    directory "/var/cache/bind";
+
+    listen-on port 53 { 127.0.0.1; 192.168.1.3; };
+
+    allow-query { localhost; 192.168.1.0/24; };
+
+    allow-query-cache { localhost; 192.168.1.0/24; };
+
+    validate-except { "linux-valley.com.br"; };
+
+    forwarders {
+        8.8.8.8;
+    };
+
+    forward only;
+
+    recursion no;
+};
+
+logging {
+    channel queries_log {
+        file "/var/log/bind9/queries.log" versions 5 size 20m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel security_log {
+        file "/var/log/bind9/security.log" versions 5 size 20m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel errors_log {
+        file "/var/log/bind9/dns-errors.log" versions 5 size 20m;
+        severity warning;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel resolver_log {
+        file "/var/log/bind9/resolver.log" versions 5 size 20m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel general_log {
+        file "/var/log/bind9/general.log" versions 5 size 20m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    category queries {
+        queries_log;
+    };
+
+    category security {
+        security_log;
+    };
+
+    category default {
+        errors_log;
+        general_log;
+    };
+
+    category resolver {
+        resolver_log;
+    };
+};

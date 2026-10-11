@@ -1,0 +1,22 @@
+$TTL 1D
+@ IN SOA master.linux-valley.com.br. root.linux-valley.com.br. (
+                    1   ; serial
+                    1D  ; refresh
+                    1H  ; retry
+                    1W  ; expiry
+                    3H  ; minimum
+)
+
+; NS
+@ IN NS master.linux-valley.com.br.
+@ IN NS slave.linux-valley.com.br.
+
+; NS IP
+@ IN A 192.168.1.3
+@ IN A 192.168.1.35
+
+; Hosts in Master
+financeiro IN A 192.168.1.30
+marketing  IN A 192.168.1.31
+master     IN A 192.168.1.3
+slave      IN A 192.168.1.35

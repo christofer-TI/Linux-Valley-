@@ -1,91 +1,94 @@
-# DNS Autoritativo - Atributos DNS e Zonas
-###
+# DNS Autoritativo - Master e Zonas DNS
 
 1.OBJETIVO
 Neste laboratorio configurei um servidor DNS autoritativo utilizando o BIND9.
-O objetivo foi entender como funciona uma zona DNS, configurar seus principais atributos e criar registros para resolucao de nomes internos.
-A zona utilizada foi linux-valley.
+O objetivo foi entender como funciona um servidor DNS Master, configurar zonas DNS e criar registros para resolucao direta e reversa de nomes.
+A zona utilizada foi linux-valley.com.br.
 ###
 
 2.AMBIENTE
 - Ubuntu Server 24.04.5 LTS
 - BIND9
 - VirtualBox
-- Hostname: linux-valley-server
-- Interface de laboratorio: enp0s8
-- Rede: 192.168.10.0/24
-- IP do servidor: 192.168.10.1
+- Servidor DNS Master: 192.168.1.3
+- Servidor DNS Cache: 192.168.1.4
+- Servidor DNS Slave: 192.168.1.35
+- Cliente: 192.168.1.6
+- Rede: 192.168.1.0/24
 ###
 
-3.CONFIGURACAO DA ZONA
-A zona linux-valley foi configurada no arquivo named.conf.local.
+3.CONFIGURACAO DAS ZONAS
+As zonas DNS foram declaradas no arquivo named.conf.local.
 
-// Define a zona DNS que sera administrada por este servidor
-zone "linux-valley" {
+O servidor possui duas zonas:
+- Zona direta: linux-valley.com.br
+- Zona reversa: 1.168.192.in-addr.arpa
 
-    // Define este servidor como master da zona
-    type master;
+O arquivo named.conf.options contem as configuracoes gerais do BIND9, incluindo regras de acesso, encaminhamento de consultas e funcionamento do servidor.
+Tambem configurei logs para acompanhar consultas DNS, eventos de seguranca, avisos e erros. Esses registros ajudam a identificar problemas e analisar o comportamento do servico.
 
-    // Indica o arquivo que contem os registros da zona
-    file "/etc/bind/db.linux-valley";
-};
-
-O arquivo da zona foi criado em:
-- /etc/bind/db.linux-valley
+Arquivos de configuracao:
+- named.conf.options
+- named.conf.local
+- linux-valley.com.br.zone
+- linux-valley.com.br.rev.zone
 ###
 
 4.REGISTROS DNS
-A zona foi configurada com registros SOA, NS e A.
+A zona direta possui registros SOA, NS e A.
+O registro SOA contem informacoes administrativas da zona, enquanto os registros NS identificam os servidores DNS autoritativos.
+Os registros A associam nomes DNS a enderecos IPv4.
 
-$TTL 86400
+Registros configurados:
+- financeiro.linux-valley.com.br - 192.168.1.30
+- marketing.linux-valley.com.br - 192.168.1.31
+- master.linux-valley.com.br - 192.168.1.3
+- slave.linux-valley.com.br - 192.168.1.35
 
-@ IN SOA srv.linux-valley. admin.linux-valley. (
-    2026100401 ; Serial
-    3600       ; Refresh
-    1800       ; Retry
-    604800     ; Expire
-    86400      ; Negative Cache TTL
-)
+O dominio raiz linux-valley.com.br tambem possui dois registros A, associados aos enderecos 192.168.1.3 e 192.168.1.35.
+A zona reversa utiliza registros PTR para associar enderecos IP aos respectivos nomes DNS.
 
-@ IN NS srv.linux-valley.
-
-srv IN A 192.168.10.1
-www IN A 192.168.10.1
-intranet IN A 192.168.10.1
-
-Registros criados:
-- srv.linux-valley - 192.168.10.1
-- www.linux-valley - 192.168.10.1
-- intranet.linux-valley - 192.168.10.1
+Registros configurados:
+- 192.168.1.30 - financeiro.linux-valley.com.br
+- 192.168.1.31 - marketing.linux-valley.com.br
+- 192.168.1.3 - master.linux-valley.com.br
+- 192.168.1.35 - slave.linux-valley.com.br
 ###
 
 5.VALIDACAO
-A configuracao do BIND foi validada utilizando:
-sudo named-checkconf
+A configuracao do BIND9 pode ser verificada com:
+- sudo named-checkconf
 
-O comando nao apresentou erros.
-A zona tambem foi validada:
-sudo named-checkzone linux-valley /etc/bind/db.linux-valley
+Para validar a zona direta no servidor Master:
+- sudo named-checkzone linux-valley.com.br /var/cache/bind/linux-valley.com.br.zone
 
-Resultado:
-zone linux-valley/IN: loaded serial 2026100401
-OK
+Para validar a zona reversa:
+- sudo named-checkzone 1.168.192.in-addr.arpa /var/cache/bind/linux-valley.com.br.rev.zone
+
+Esses comandos ajudam a identificar erros de sintaxe e problemas nos arquivos de zona.
 ###
 
-6.TESTES
-Foi utilizado o dig para consultar diretamente o servidor DNS:
+6.TESTES DNS
+Para consultar um registro diretamente no servidor Master:
+- dig @192.168.1.3 financeiro.linux-valley.com.br
 
-dig @192.168.10.1 srv.linux-valley
-dig @192.168.10.1 www.linux-valley
-dig @192.168.10.1 intranet.linux-valley
+Para testar a resolucao reversa:
+- dig @192.168.1.3 -x 192.168.1.30
 
-Os registros foram resolvidos corretamente para 192.168.10.1.
-Tambem foi configurado o servidor para que o sistema utilizasse o DNS local, permitindo consultar os nomes sem informar diretamente o endereco IP do servidor DNS.
+A flag AA na resposta indica que o servidor forneceu uma resposta autoritativa para a consulta.
 ###
 
-7.RESULTADO
-Ao final do laboratorio, o BIND9 estava funcionando como servidor DNS autoritativo para a zona linux-valley.
-Foi possivel criar a zona, definir o servidor autoritativo, configurar registros DNS e testar a resolucao dos nomes internos.
-Este laboratorio representa a primeira etapa dos estudos de DNS no Linux-Valley. As proximas etapas serao voltadas para DNS Cache, integracao entre DNS autoritativo e cache e configuracao de DNS Slave.
+7.MONITORAMENTO DE LOGS
+Configurei logs para acompanhar o funcionamento do BIND9 e facilitar a analise de problemas.
+Para acompanhar as consultas DNS em tempo real:
+- sudo tail -f /var/log/bind9/queries.log
+
+Esse comando permite observar os registros gerados enquanto as consultas sao realizadas.
 ###
 
+8.RESULTADO
+Ao final deste laboratorio, configurei um servidor DNS autoritativo Master utilizando o BIND9.
+Foi possivel trabalhar com zonas direta e reversa, criar registros DNS, compreender a resolucao de nomes e acompanhar os eventos do servico por meio de logs.
+O ambiente faz parte de uma infraestrutura DNS composta por um servidor Master, um servidor Cache, um servidor Slave e um cliente.
+O servidor Cache recebe consultas dos clientes e encaminha as consultas referentes a zona linux-valley.com.br para o Master. O Cache tambem pode armazenar respostas para reutilizacao, conforme sua configuracao.
+A proxima etapa do laboratorio sera concluir a configuracao do DNS Slave e testar a transferencia de zonas entre os servidores.
