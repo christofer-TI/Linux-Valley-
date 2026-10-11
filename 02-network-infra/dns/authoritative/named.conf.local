@@ -1,9 +1,11 @@
-// Define a zona DNS que sera administrada por este servidor
-zone "linux-valley" {
-
-    // Define este servidor como master da zona
+// Zona direta
+zone "linux-valley.com.br." IN {
     type master;
+    file "linux-valley.com.br.zone";
+};
 
-    // Indica o arquivo que contem os registros da zona
-    file "/etc/bind/db.linux-valley";
+// Zona reversa
+zone "1.168.192.in-addr.arpa" IN {
+    type master;
+    file "linux-valley.com.br.rev.zone";
 };
