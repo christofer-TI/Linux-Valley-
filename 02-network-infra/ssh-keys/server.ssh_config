@@ -1,0 +1,11 @@
+# Permite autenticacao por chave publica
+PubkeyAuthentication yes
+
+# Desabilita autenticacao por senha
+PasswordAuthentication no
+
+# Desabilita autenticacao interativa por teclado
+KbdInteractiveAuthentication no
+
+# Bloqueia login SSH direto como root
+PermitRootLogin no
