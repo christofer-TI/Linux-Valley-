@@ -67,49 +67,64 @@ As permissoes foram restauradas:
 O acesso voltou a funcionar normalmente.
 
 ## 4. Configuracao dos Virtual Hosts
-Foram configurados dois sites no mesmo servidor Apache.
+
+Foram configurados dois sites no mesmo servidor Apache2, utilizando a porta 80/TCP. Cada Virtual Host possui um nome e um diretorio especifico para disponibilizar seu conteudo.
 
 ### Linux Valley
 Diretorio do site:
 
 - /var/www/linux-valley
 
-Arquivo de configuracao:
+Arquivo de configuracao no servidor:
 
 - /etc/apache2/sites-available/linux-valley.conf
 
-Configuracao utilizada: -arquivo 
+Arquivo de configuracao no laboratorio:
 
-A pagina HTML apresenta o titulo Linux Valley e informa que o site esta sendo servido pelo Virtual Host linux-valley.local.
+- linux-valley.conf
+
+Pagina HTML:
+
+- linux-valley.html
+
+A pagina apresenta o titulo Linux Valley e informa que o site esta sendo servido pelo Virtual Host linux-valley.local.
 
 ### Intranet
+
 Diretorio do site:
 
 - /var/www/intranet
 
-Arquivo de configuracao:
+Arquivo de configuracao no servidor:
 
 - /etc/apache2/sites-available/intranet.conf
 
-Configuracao utilizada:
+Arquivo de configuracao no laboratorio:
 
-A pagina HTML apresenta o titulo Intranet e informa que o site esta sendo servido pelo Virtual Host intranet.local.
+- intranet.conf
+
+Pagina HTML:
+
+- intranet.html
+
+A pagina apresenta o titulo Intranet e informa que o site esta sendo servido pelo Virtual Host intranet.local.
 
 ### Habilitacao dos sites
+
 Os Virtual Hosts foram habilitados com:
 
 - sudo a2ensite linux-valley.conf
 - sudo a2ensite intranet.conf
 
-A sintaxe da configuracao foi validada:
+A sintaxe das configuracoes foi validada com:
 
 - sudo apache2ctl configtest
 
-Resultado esperado:
+Resultado obtido:
 
 - Syntax OK
 
-As configuracoes foram aplicadas sem interromper o servico:
+As configuracoes foram aplicadas com:
 
 - sudo systemctl reload apache2
 
