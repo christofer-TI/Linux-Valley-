@@ -1,0 +1,5 @@
+# Postfix - Servico SMTP
+# Laboratorio Linux Valley
+
+# Recebimento de conexoes SMTP pela porta 25
+smtp       inet  n       -       y       -       -       smtpd

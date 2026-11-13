@@ -1,0 +1,8 @@
+# Dovecot - Configuracao de armazenamento
+# Laboratorio Linux Valley
+
+# Localizacao das mensagens utilizando formato Mbox
+mail_location = mbox:~/mail:INBOX=/var/mail/%u
+
+# Grupo utilizado para acesso privilegiado as caixas postais
+mail_privileged_group = mail

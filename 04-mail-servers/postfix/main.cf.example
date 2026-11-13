@@ -1,0 +1,22 @@
+# Postfix - Configuracoes personalizadas
+# Laboratorio Linux Valley
+
+# Identificacao do servidor
+myhostname = postfix.linux-valley.test
+myorigin = /etc/mailname
+
+# Dominios locais
+mydestination = $myhostname, linux-valley.test, postfix.linux-valley.test, localhost.linux-valley.test, localhost
+
+# Interfaces e redes autorizadas
+inet_interfaces = all
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 192.168.1.3/32
+
+# Controle de retransmissao
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+
+# Configuracao TLS
+smtpd_tls_security_level = may
+smtp_tls_security_level = may
+smtpd_tls_cert_file = /etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file = /etc/ssl/private/ssl-cert-snakeoil.key

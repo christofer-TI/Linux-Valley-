@@ -1,0 +1,5 @@
+# Dovecot - Configuracao de autenticacao
+# Laboratorio Linux Valley
+
+# Mecanismo de autenticacao dos usuarios
+auth_mechanisms = plain

@@ -1,0 +1,15 @@
+# Dovecot - Configuracao SSL/TLS
+# Laboratorio Linux Valley
+
+# Habilita conexoes seguras
+ssl = yes
+
+# Certificado e chave privada
+ssl_cert = </etc/dovecot/private/dovecot.pem
+ssl_key = </etc/dovecot/private/dovecot.key
+
+# Diretorio de certificados confiaveis
+ssl_client_ca_dir = /etc/ssl/certs
+
+# Parametros Diffie-Hellman
+ssl_dh = </usr/share/dovecot/dh.pem
